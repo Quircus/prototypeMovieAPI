@@ -27,7 +27,7 @@ namespace prototypeMovieAPI.Controllers
 
             else
             {
-                return Ok(db.Cinemas.OrderBy(l => l.Name).ToList());       // 200 OK, listings serialized in response body 
+                return Ok(db.Cinemas.OrderBy(l => l.Name).ToList());       // 200 OK! 
             }
         }
 
@@ -43,6 +43,19 @@ namespace prototypeMovieAPI.Controllers
             }
 
             return Ok(cinema);
+        }
+
+        // GET: api/Cinemas/Search/5
+        [Route("Cinemas/Search/{id}")]
+        public IHttpActionResult GetCinemasBySearch(string id)
+        {
+            string search = id.ToUpper();
+            IEnumerable<Cinema> finds = db.Cinemas.Where(c => c.Name.ToUpper().Contains(search)).OrderBy(c => c.Name);
+            if (finds.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(finds.ToList());
         }
 
         // PUT: api/Cinemas/5

@@ -33,9 +33,23 @@ namespace prototypeMovieAPI.Controllers
             {
                 return NotFound();
             }
-
             return Ok(movie);
         }
+
+        // GET: api/Movies/TitleSearch/id
+
+        [Route("Movies/TitleSearch/{id}")]
+        public IHttpActionResult GetMoviesBySearchTerm(string id)
+        {
+            string search = id.ToUpper();
+            IEnumerable<Movie> finds = db.Movies.Where(m => m.Title.ToUpper().Contains(search)).OrderBy(m => m.Title);
+            if (finds == null)
+            {
+                return NotFound();
+            }
+            return Ok(finds);
+        }
+
 
         // GET: api/Movies/Genre/id
 
@@ -48,10 +62,7 @@ namespace prototypeMovieAPI.Controllers
             {
                 return NotFound();
             }
-
             return Ok(gens);
-
-
         }
 
         // GET: api/Movies/Screenings/id
